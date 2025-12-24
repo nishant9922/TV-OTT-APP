@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="28dp"
+    android:layout_marginBottom="8dp"
+    android:paddingStart="32dp"
+    android:paddingEnd="0dp"
+    android:background="@android:color/transparent">
+
+    <!-- 🎬 Netflix-style section title -->
+    <TextView
+        android:id="@+id/rowTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trending Now"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="0.02"
+        android:layout_marginBottom="12dp"
+        android:shadowColor="#B0000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="6"
+        android:focusable="false" />
+
+    <!-- 🎞️ Horizontal rail for cards -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/horizontalRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="56dp"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none"
+        android:layoutDirection="ltr"
+        android:background="@android:color/transparent" />
+
+    <!-- Decorative divider (subtle like Netflix) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="32dp"
+        android:background="#22FFFFFF" />
+</LinearLayout>

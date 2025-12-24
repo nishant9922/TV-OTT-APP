@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TV Demo</string>
+    <string name="my_list_fragment">My List Fragment</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.TvDemo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- customize if needed -->
+    </style>
+
+    <style name="Theme.TvDemo.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+</resources>
