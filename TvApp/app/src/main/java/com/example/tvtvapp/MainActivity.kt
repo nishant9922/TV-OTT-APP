@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 .setDuration(120)
                 .start()
         }
-2
+
 
         setupDrawer()
         setupBackHandler()
