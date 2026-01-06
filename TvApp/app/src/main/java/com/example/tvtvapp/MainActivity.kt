@@ -69,6 +69,19 @@ class MainActivity : AppCompatActivity() {
             isFocusable = true
             isFocusableInTouchMode = true
         }
+        miniContainer.setOnFocusChangeListener { _, hasFocus ->
+
+            // 🔍 Debug – confirms focus is actually moving
+            android.util.Log.d("MiniPlayerFocus", "hasFocus = $hasFocus")
+
+            // 🔥 Scale animation on focus
+            miniContainer.animate()
+                .scaleX(if (hasFocus) 1.05f else 1f)
+                .scaleY(if (hasFocus) 1.05f else 1f)
+                .setDuration(120)
+                .start()
+        }
+2
 
         setupDrawer()
         setupBackHandler()
