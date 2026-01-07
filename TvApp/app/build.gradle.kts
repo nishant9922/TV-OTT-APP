@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.tvtvapp"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -59,6 +59,7 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.animation.core)
     kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     // REMOVE old Exoplayer completely

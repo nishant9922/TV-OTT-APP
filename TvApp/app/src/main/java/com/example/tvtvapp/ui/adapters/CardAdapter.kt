@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.example.tvtvapp.MainActivity
 import com.example.tvtvapp.R
 import com.example.tvtvapp.data.Card
+import com.example.tvtvapp.player.PlayerManager
+import java.lang.ref.WeakReference
 
 class CardAdapter(
     private val cards: List<Card>,
@@ -53,7 +55,11 @@ class CardAdapter(
         }
 
         holder.itemView.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
+            if (hasFocus) {
+                // ✅ SAVE LAST FOCUSED RAIL CARD
+                PlayerManager.lastFocusedRailViewRef = WeakReference(v)
+
+            } else {
                 holder.handler.removeCallbacksAndMessages(null)
                 holder.longPressTriggered = false
             }

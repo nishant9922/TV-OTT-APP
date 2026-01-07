@@ -33,18 +33,42 @@
             android:focusableInTouchMode="true"
             android:clickable="true"
             android:background="@drawable/mini_focus_bg"
-
-            android:nextFocusLeft="@id/navRecycler"
             android:nextFocusUp="@id/container"
-            android:nextFocusRight="@id/container"
             android:nextFocusDown="@id/container">
 
             <com.logituit.logixsdk.logixplayer.player.LogixPlayerView
                 android:id="@+id/miniPlayerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="false"/>
+                android:focusable="false" />
+
+            <!-- Overlay ABOVE SurfaceView -->
+            <FrameLayout
+                android:id="@+id/miniOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:clickable="false">
+
+                <ImageView
+                    android:id="@+id/miniPlayPause"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_play"
+                    android:visibility="gone"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/mini_control_focus_bg"
+                    android:nextFocusLeft="@id/miniPlayerContainer"
+                    android:nextFocusRight="@id/miniPlayerContainer"
+                    android:nextFocusUp="@id/container"
+                    android:nextFocusDown="@id/container"/>
+
+            </FrameLayout>
+
         </FrameLayout>
+
 
     </FrameLayout>
 

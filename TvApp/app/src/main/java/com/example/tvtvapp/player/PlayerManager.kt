@@ -8,6 +8,7 @@ import com.logituit.logixsdk.logixplayer.LogixPlayerSDK
 import com.logituit.logixsdk.logixplayer.player.LogixMediaItem
 import com.logituit.logixsdk.logixplayer.player.LogixPlayer
 import com.logituit.logixsdk.logixplayer.player.LogixPlayerView
+import java.lang.ref.WeakReference
 
 @UnstableApi
 object PlayerManager {
@@ -19,11 +20,15 @@ object PlayerManager {
     private var media: LogixMediaItem? = null
     private var resumePos: Long = 0L
 
+    var lastFocusedRailViewRef: WeakReference<View>? = null
+
+
     var mode: PlayerMode = PlayerMode.MINI
         private set
 
     // 🔥 EXTRA DATA FOR FULLSCREEN LAUNCH
     private var lastMediaId: String? = null
+
 
     fun init(context: Context) {
         if (player == null) {
@@ -81,7 +86,7 @@ object PlayerManager {
     // 🔥 DATA FOR FULLSCREEN
     fun getFullscreenIntentData(): Triple<String, String, Long>? {
         val m = media ?: return null
-        val url = m.sourceUrl ?: return null   // 🔥 fix nullability
+        val url = m.sourceUrl ?: return null
 
         return Triple(
             url,
@@ -92,6 +97,36 @@ object PlayerManager {
 
 
     fun isActive(): Boolean = media != null
+
+    fun togglePlayPause() {
+        val p = player ?: return
+
+        try {
+            if (p.isPlaying()) {
+                Log.d("PlayerManager", "Pause")
+                p.pause()
+            } else {
+                Log.d("PlayerManager", "Play")
+                p.play()
+            }
+        } catch (e: Exception) {
+            Log.e("PlayerManager", "Toggle failed", e)
+        }
+    }
+
+
+    fun isPlaying(): Boolean {
+        return player?.isPlaying() == true
+    }
+    fun setLastFocusedRail(view: View) {
+        lastFocusedRailViewRef = WeakReference(view)
+    }
+
+    fun restoreRailFocus() {
+        lastFocusedRailViewRef?.get()?.requestFocus()
+    }
+
+
 
     fun release() {
         player?.release()
