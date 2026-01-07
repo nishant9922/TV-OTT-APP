@@ -36,7 +36,6 @@ import com.logituit.logixsdk.logixplayer.player.LogixPlayerView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawer: DrawerLayout
-
     private lateinit var navRecycler: RecyclerView
     private lateinit var miniContainer: View
     private lateinit var miniPlayerView: LogixPlayerView
@@ -87,9 +86,10 @@ class MainActivity : AppCompatActivity() {
             // 🔍 Debug – confirms focus is actually moving
             android.util.Log.d("MiniPlayerFocus", "hasFocus = $hasFocus")
 
-    }
+        }
+2
 
-        setupMiniPlayerControls()
+
         setupDrawer()
         setupBackHandler()
     }
