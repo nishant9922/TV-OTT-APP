@@ -86,10 +86,16 @@ class MainActivity : AppCompatActivity() {
             // 🔍 Debug – confirms focus is actually moving
             android.util.Log.d("MiniPlayerFocus", "hasFocus = $hasFocus")
 
+            // 🔥 Scale animation on focus
+            miniContainer.animate()
+                .scaleX(if (hasFocus) 1.05f else 1f)
+                .scaleY(if (hasFocus) 1.05f else 1f)
+                .setDuration(120)
+                .start()
         }
-2
 
 
+        setupMiniPlayerControls()
         setupDrawer()
         setupBackHandler()
     }
@@ -104,7 +110,6 @@ class MainActivity : AppCompatActivity() {
 
             miniPlayerView.post {
                 PlayerManager.attach(miniPlayerView)
-                updatePlayPauseIcon()
                 currentMiniPosition = MiniPosition.BOTTOM_RIGHT
                 moveMiniPlayer(MiniPosition.BOTTOM_RIGHT)
             }
@@ -199,117 +204,6 @@ class MainActivity : AppCompatActivity() {
             start()
         }
     }
-
-    private fun setupMiniPlayerControls() {
-
-        // 🎬 MINI PLAYER CONTAINER
-        miniContainer.setOnKeyListener { _, keyCode, event ->
-
-            when (keyCode) {
-
-                // ▶️ OPEN FULLSCREEN (ONLY ON KEY UP)
-                KeyEvent.KEYCODE_DPAD_CENTER,
-                KeyEvent.KEYCODE_ENTER -> {
-                    // 🚫 If play/pause is focused, DO NOT open fullscreen
-                    if (miniPlayPause.hasFocus()) {
-                        return@setOnKeyListener false
-                    }
-                    // 🚫 Ignore DOWN to avoid long-press conflict
-                    if (event.action != KeyEvent.ACTION_UP) return@setOnKeyListener true
-
-                    // 🔐 Block if coming from long-press focus transfer
-                    if (blockNextCenterKeyUp) {
-                        blockNextCenterKeyUp = false
-                        return@setOnKeyListener true
-                    }
-
-                    launchFullscreenSmooth()
-                    true
-                }
-
-                // ➡️ MOVE TO PLAY / PAUSE
-                KeyEvent.KEYCODE_DPAD_LEFT,
-                KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    if (event.action == KeyEvent.ACTION_DOWN) {
-                        updatePlayPauseIcon()
-                        miniPlayPause.visibility = View.VISIBLE
-                        miniPlayPause.requestFocus()
-                    }
-                    true
-                }
-
-                // ⬆️ BACK TO RAIL
-                KeyEvent.KEYCODE_DPAD_UP -> {
-                    if (event.action == KeyEvent.ACTION_DOWN) {
-                        PlayerManager.restoreRailFocus()
-                    }
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        // ⏯ PLAY / PAUSE BUTTON
-        miniPlayPause.setOnKeyListener { _, keyCode, event ->
-            if (event.action != KeyEvent.ACTION_DOWN) return@setOnKeyListener false
-
-            when (keyCode) {
-
-                // ⏯ TOGGLE PLAY / PAUSE
-                KeyEvent.KEYCODE_DPAD_CENTER,
-                KeyEvent.KEYCODE_ENTER -> {
-                    PlayerManager.togglePlayPause()
-                    updatePlayPauseIcon()
-                    true
-                }
-
-                // ⬅️ BACK TO MINI PLAYER
-                KeyEvent.KEYCODE_DPAD_LEFT,
-                KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    miniContainer.requestFocus()
-                    true
-                }
-
-                // ⬆️ BACK TO RAIL
-                KeyEvent.KEYCODE_DPAD_UP -> {
-                    PlayerManager.restoreRailFocus()
-                    true
-                }
-
-                else -> false
-            }
-
-        }
-        miniPlayPause.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                updatePlayPauseIcon()
-                miniPlayPause.visibility = View.VISIBLE
-            }
-        }
-
-
-        // 👁 VISUAL ONLY
-        miniContainer.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                //  When mini container is focused → HIDE icon
-                miniPlayPause.visibility = View.GONE
-            }
-        }
-
-    }
-
-    fun updatePlayPauseIcon() {
-        val icon = if (PlayerManager.isPlaying())
-            R.drawable.ic_pause
-        else
-            R.drawable.ic_play
-
-        (miniPlayPause as ImageView).setImageResource(icon)
-    }
-
-
-
 
     private fun setupBackHandler() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -433,7 +327,7 @@ class MainActivity : AppCompatActivity() {
             event.action == KeyEvent.ACTION_UP &&
             (event.keyCode == KeyEvent.KEYCODE_DPAD_CENTER ||
                     event.keyCode == KeyEvent.KEYCODE_ENTER) &&
-            miniContainer.isFocused()
+            miniContainer.hasFocus()
         ) {
             launchFullscreenSmooth()
             return true
